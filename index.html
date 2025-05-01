@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Task Time Logger</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f7f7f7;
+    }
+    h1 {
+      color: #333;
+    }
+    textarea, button, input {
+      margin-top: 10px;
+      font-size: 1em;
+      padding: 8px;
+    }
+    #log {
+      margin-top: 20px;
+      white-space: pre-wrap;
+      background: #fff;
+      padding: 15px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h1>Task Time Logger</h1>
+
+  <label for="task">Enter Task:</label><br />
+  <input type="text" id="task" placeholder="Write your task here" size="40"/><br />
+  <button onclick="logTask()">Log Task with Time</button>
+  <button onclick="downloadLog()">Download Log as .txt</button>
+
+  <div id="log"></div>
+
+  <script>
+    const logContainer = document.getElementById('log');
+    let logData = '';
+
+    function logTask() {
+      const taskInput = document.getElementById('task');
+      const task = taskInput.value.trim();
+      if (task === '') {
+        alert("Please enter a task.");
+        return;
+      }
+      const now = new Date();
+      const timestamp = now.toLocaleString();
+      const entry = `[${timestamp}] ${task}\n`;
+      logData += entry;
+      logContainer.textContent += entry;
+      taskInput.value = '';
+    }
+
+    function downloadLog() {
+      const blob = new Blob([logData], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'task_log.txt';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>
